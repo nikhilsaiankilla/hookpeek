@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import { integer, jsonb, pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core"
 
 export const endpointsTable = pgTable('endpoints', {
@@ -15,9 +16,19 @@ export const requestsTable = pgTable('requests', {
     method: varchar("method", { length: 10 }).notNull(),
 
     headers: jsonb("headers").notNull(),
-    body: jsonb("body"), 
+    body: jsonb("body"),
     queryParams: jsonb("query_params"),
 
     createdAt: timestamp("created_at").notNull().defaultNow(),
 })
 
+export const endpointsRelations = relations(endpointsTable, ({ many }) => ({
+    requests: many(requestsTable),
+}));
+
+export const requestsRelations = relations(requestsTable, ({ one }) => ({
+    endpoint: one(endpointsTable, {
+        fields: [requestsTable.endpointId],
+        references: [endpointsTable.id],
+    }),
+}));
