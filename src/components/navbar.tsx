@@ -35,7 +35,7 @@ const Navbar = () => {
                             href={link.path}
                             key={idx}
                             target={link.target ? '_blank' : '_self'}
-                            className='text-sm hover:text-primary transaction-all duration-200 ease-in-out cursor-pointer'
+                            className='text-sm font-semibold hover:text-primary transaction-all duration-200 ease-in-out cursor-pointer'
                         >
                             {link.name}
                         </Link>

@@ -8,6 +8,12 @@ import { toast } from "sonner";
 import { columns, Requests } from "./columns";
 import { DataTable } from "./data-table";
 
+type PageData = {
+    totalNoOfRequests: number,
+    totalPages: number,
+    hasMany: boolean,
+}
+
 const Page = () => {
     // State
     const [endpointId, setEndPointId] = useState<string>("");
@@ -15,8 +21,12 @@ const Page = () => {
     const [page, setPage] = useState<number>(1);
     const [limit, setLimit] = useState<number>(20);
     const [loading, setLoading] = useState<boolean>(false);
-    const [data, setData] = useState<Requests[]>([])
-
+    const [data, setData] = useState<PageData>({
+        totalNoOfRequests: 0,
+        totalPages: 0,
+        hasMany: false,
+    })
+    const [requests, setRequests] = useState<Requests[]>([])
     // This function ONLY handles extracting the ID
     const handleExtractAndSearch = () => {
         if (!urlInput) return;
@@ -54,7 +64,7 @@ const Page = () => {
             if (response.status === 404) {
                 console.log("No requests found for this endpoint yet.");
                 toast.error('No Requests Found!!')
-                setData([]);
+                setRequests([]);
                 return;
             }
 
@@ -63,13 +73,12 @@ const Page = () => {
             }
 
             const json = await response.json();
-            console.log("Fetched Data:", json);
-            // setData(json); // Store data here if needed
 
             const requests = json?.data?.requests;
-            setData(requests)
-            console.log(requests);
-
+            setData(json?.data)
+            setPage(json?.data?.page)
+            setLimit(json?.data?.limit)
+            setRequests(requests)
         } catch (error: unknown) {
             const err = error instanceof Error ? error.message : 'Internal Server Error';
             toast.error(err)
@@ -104,17 +113,16 @@ const Page = () => {
 
             <div className="relative z-10 pt-28 px-3">
                 <div className="max-w-7xl w-full mx-auto bg-white p-6 rounded-sm shadow-sm space-y-4">
-                    <h1 className="text-xl font-semibold text-primary">
-                        Paste your webhook URL
+                    <h1 className="text-xl md:text-2xl font-semibold text-primary">
+                        Enter your webhook URL
                     </h1>
 
                     <p className="text-sm text-gray-600">
-                        Create a temporary webhook URL to capture and inspect requests from Stripe
-                        or any service that sends webhooks.
+                        Paste an existing webhook endpoint to start capturing and inspecting incoming requests.
                     </p>
 
                     <p className="text-xs text-gray-500">
-                        Use this URL in your provider’s webhook settings. Requests will appear instantly.
+                        Events sent to this URL will appear here in real time.
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -138,32 +146,58 @@ const Page = () => {
                     </div>
                 </div>
 
-                <div className="w-full max-w-7xl mx-auto mt-5 bg-white p-6 rounded-sm shadow-sm space-y-4">
-                    <div className="w-full flex items-center justify-between flex-wrap gap-5">
-                        <div className="space-y-2">
-                            <h1 className="text-xl md:text-2xl text-primary font-bold">Requests</h1>
-                            <p className="text-sm text-gray-600 font-bold">All your requests debug them clearly</p>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                            <div>
-                                <Input value={page} />
+                {
+                    requests.length > 0 && <div className="w-full max-w-7xl mx-auto mt-5 bg-white p-6 rounded-sm shadow-sm space-y-4">
+                        <div className="w-full flex items-center justify-between flex-wrap gap-5">
+                            <div className="space-y-2">
+                                <h1 className="text-xl md:text-2xl text-primary font-bold">Requests</h1>
+                                <p className="text-sm text-gray-600 font-bold">All your requests debug them clearly</p>
                             </div>
+
                             <div className="flex items-center gap-2">
-                                <Button variant={'outline'} className="group">
-                                    <ArrowBigLeft className="group-hover:text-primary transition-all duration-150 ease-in" />
-                                </Button>
-                                <Button variant={'outline'} className="group">
-                                    <ArrowBigRight className="group-hover:text-primary transition-all duration-150 ease-in" />
-                                </Button>
-                            </div>
-                        </div>
+                                <div className="text-sm flex items-center gap-2 px-2 py-1.5 rounded-sm border border-gray-400">
+                                    <span>Total Pages:</span> <span className="text-primary">{data?.totalPages}</span>
+                                </div>
+                                <div className="text-sm flex items-center gap-2 px-2 py-1.5 rounded-sm border border-gray-400">
+                                    <span>Current Page:</span> <span className="text-primary">{page}</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <Button
+                                        variant="outline"
+                                        className="group disabled:cursor-not-allowed"
+                                        disabled={page <= 1}
+                                        aria-label="Previous page"
+                                        onClick={() => setPage((p) => Math.max(1, p - 1))}
+                                    >
+                                        <ArrowBigLeft className="transition-colors duration-150 group-hover:text-primary" />
+                                    </Button>
 
-                        <div className="w-full">
-                            <DataTable data={data} columns={columns} />
+                                    <Button
+                                        variant="outline"
+                                        className="group disabled:cursor-not-allowed"
+                                        disabled={!data?.hasMany}
+                                        aria-label="Next page"
+                                        onClick={() => setPage((p) => p + 1)}
+                                    >
+                                        <ArrowBigRight className="transition-colors duration-150 group-hover:text-primary" />
+                                    </Button>
+                                </div>
+                            </div>
+
+                            <div className="w-full">
+                                {
+                                    loading
+                                        ?
+                                        <div className="w-full h-[60vh] flex items-center justify-center">
+                                            <Loader className="animate-spin" />
+                                        </div>
+                                        :
+                                        requests.length > 0 && <DataTable data={requests} columns={columns} />
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
             </div>
         </main>
     )

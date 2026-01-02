@@ -15,6 +15,7 @@ import {
 import { Button } from "@/src/components/ui/button"
 import { Eye } from "lucide-react"
 import { CodeBlock } from "@/src/components/ui/code-block"
+import { useMemo } from "react"
 
 export type Requests = {
     id: string
@@ -94,6 +95,17 @@ export const columns: ColumnDef<Requests>[] = [
                 HEAD: "bg-gray-100 text-gray-700 border-gray-200",
             }
 
+            const headersJson = useMemo(
+                () => JSON.stringify(requestData.headers, null, 2),
+                [requestData.headers]
+            )
+            const bodyJson = useMemo(
+                () => JSON.stringify(requestData.body, null, 2),
+                [requestData.body]
+            )
+
+            const date = new Date(row.getValue("createdAt"))
+
             const colorClass = colors[requestData?.method] || "bg-gray-100 text-gray-700 border-gray-200"
             return <Dialog>
                 <DialogTrigger asChild>
@@ -110,7 +122,7 @@ export const columns: ColumnDef<Requests>[] = [
                         </DialogDescription>
                     </DialogHeader>
 
-                    <div className="space-y-4 mt-4">
+                    <div className="space-y-4 mt-4 overflow-x-hidden">
                         {/* Method & Timestamp */}
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-1">
@@ -121,19 +133,23 @@ export const columns: ColumnDef<Requests>[] = [
                             </div>
                             <div className="space-y-1">
                                 <h4 className="text-sm font-medium leading-none">Timestamp</h4>
-                                <p className="text-sm text-muted-foreground">{new Date(requestData.created_at).toLocaleString()}</p>
+                                <p className="text-sm text-muted-foreground">{date.toLocaleString()}</p>
                             </div>
                         </div>
 
                         {/* Headers Section */}
-                        {requestData?.headers && (
+                        {requestData?.headers && Object.keys(requestData?.headers).length > 0 && (
                             <div className="space-y-2">
                                 <h4 className="text-sm font-medium leading-none">Headers</h4>
-                                <div className="w-full max-w-full overflow-x-auto rounded-md border bg-slate-950 p-4">
+                                <div className="w-full max-w-full overflow-x-auto rounded-md border bg-slate-950 p-4 scrollbar-hide"
+                                    style={{
+                                        scrollbarWidth: "none"
+                                    }}
+                                >
                                     <CodeBlock
                                         filename="headers"
                                         language="json"
-                                        code={JSON.stringify(requestData?.headers, null, 2)}
+                                        code={headersJson}
                                     />
                                 </div>
                             </div>
@@ -144,11 +160,11 @@ export const columns: ColumnDef<Requests>[] = [
                             <h4 className="text-sm font-medium leading-none">Body / Payload</h4>
                             <div className="bg-slate-950 text-slate-50 p-4 rounded-md text-xs font-mono overflow-x-auto">
                                 {requestData?.body ? (
-                                    <div className="w-full max-w-full overflow-x-auto rounded-md border bg-slate-950 p-4">
+                                    <div className="w-full max-w-full overflow-x-auto rounded-md border bg-slate-950 p-4 scrollbar-hide">
                                         <CodeBlock
                                             filename="body"
                                             language="json"
-                                            code={JSON.stringify(requestData?.body, null, 2)}
+                                            code={bodyJson}
                                         />
                                     </div>
                                 ) : (
