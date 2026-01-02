@@ -3,7 +3,7 @@ import { getDbInstance } from "@/src/lib/db";
 import { lt } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
-export default async (req: NextRequest, res: NextResponse) => {
+export async function GET(req: NextRequest) {
     const authHeader = req.headers.get('Authorization');
 
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
@@ -14,11 +14,11 @@ export default async (req: NextRequest, res: NextResponse) => {
 
     const db = await getDbInstance();
 
-    const curoff = new Date(Date.now() - 24 * 60 * 60 * 1000);
+    const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000); // 24 hours ago
 
     // delete all the day before records
     await db.delete(requestsTable)
-        .where(lt(requestsTable.createdAt, curoff))
+        .where(lt(requestsTable.createdAt, cutoff))
 
     return NextResponse.json({
         message: "Old requests cleaned up successfully",
