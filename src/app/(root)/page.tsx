@@ -90,9 +90,6 @@ export default function Home() {
   return (
     <main className="min-h-screen w-full bg-white relative isolate">
       {/* Purple Gradient Grid Right Background */}
-      {/* 1. We remove 'h-full'. 'inset-0' generally handles top/bottom/left/right.
-         2. If the content grows, this absolute div will grow with the relative parent.
-      */}
       <div
         className="absolute inset-0 -z-10"
         style={{
@@ -111,7 +108,7 @@ export default function Home() {
         <section className="w-full min-h-[70vh] px-5 md:px-10 max-w-7xl mx-auto">
           <div className="w-full pt-44 lg:pt-50 text-center">
             <div className="flex justify-center">
-              <div className="flex items-center rounded-full border border-gray-200 dark:border-gray-800 overflow-hidden text-xs md:text-sm shadow-2xl">
+              <div className="flex items-center rounded-full border border-gray-200 bg-gray-100 dark:border-gray-800 overflow-hidden text-xs md:text-sm shadow-2xl">
                 <span className="px-3 py-1 bg-orange-600 text-white font-medium rounded-full">
                   Webhook Debugger
                 </span>
@@ -128,7 +125,9 @@ export default function Home() {
                 Capture, inspect, and debug webhook requests from Stripe and other providers in real time.
               </p>
               <div className="flex items-center flex-wrap gap-5 justify-center">
-                <Button className='flex items-center gap-2'>Generate a webhook URL <Link2 size={20} /></Button>
+                <Link href={'/generate-endpoint'}>
+                  <Button className='flex items-center gap-2'>Generate a webhook URL <Link2 size={20} /></Button>
+                </Link>
                 <Button variant="outline" className='flex items-center gap-2'>Monitor Requests <Logs /></Button>
               </div>
             </div>
@@ -144,17 +143,17 @@ export default function Home() {
 
             <hr className="h-1 rounded-full bg-primary/70 w-3/4 mt-5" />
             <ul className="w-full mt-10 space-y-5 py-10">
-              <li className="text-sm md:text-lg font-semibold flex items-center gap-3">
-                <ArrowBigRight className="text-primary" size={20} /> Payment succeeds but your backend doesn’t update
+              <li className="text-sm md:text-lg font-semibold items-center gap-3 grid grid-cols-7">
+                <ArrowBigRight className="text-primary col-span-1" size={20} /> <span className='col-span-6'>Payment succeeds but your backend doesn’t update</span>
               </li>
-              <li className="text-sm md:text-lg font-semibold flex items-center gap-3">
-                <ArrowBigRight className="text-primary" size={20} /> Stripe says <span className="text-primary">“Webhook failed”</span> you don’t know why
+              <li className="text-sm md:text-lg font-semibold items-center gap-3 grid grid-cols-7">
+                <ArrowBigRight className="text-primary col-span-1" size={20} /> <span className='col-span-6'>Stripe says <span className="text-primary">“Webhook failed”</span> you don’t know why</span>
               </li>
-              <li className="text-sm md:text-lg font-semibold flex items-center gap-3">
-                <ArrowBigRight className="text-primary" size={20} /> Logs don’t show the full payload
+              <li className="text-sm md:text-lg font-semibold items-center gap-3 grid grid-cols-7">
+                <ArrowBigRight className="text-primary col-span-1" size={20} /> <span className='col-span-6'>Logs don’t show the full payload</span>
               </li>
-              <li className="text-sm md:text-lg font-semibold flex items-center gap-3">
-                <ArrowBigRight className="text-primary" size={20} /> Retried requests overwrite each other
+              <li className="text-sm md:text-lg font-semibold items-center gap-3 grid grid-cols-7">
+                <ArrowBigRight className="text-primary col-span-1" size={20} /> <span className='col-span-6'>Retried requests overwrite each other</span>
               </li>
             </ul>
 
@@ -164,26 +163,26 @@ export default function Home() {
           </div>
           <div className='w-full'>
             <Image
-              src={'https://i.pinimg.com/736x/39/a4/ff/39a4ffed32f1cba66851cbbc399ae343.jpg'}
+              src={'/problems.png'}
               width={100}
               height={100}
               unoptimized
               alt="Illustration of a person looking at a screen with webhook data"
-              className="w-full h-full aspect-square object-cover rounded-lg shadow-lg"
+              className="w-full h-full aspect-square object-contain"
             />
           </div>
         </section>
 
         {/* solutions  */}
         <section className="w-full px-5 md:px-10 py-10 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10  mt-10 md:mt-20 items-center">
-          <div className='w-full'>
+          <div className='w-full order-1 md:order-0'>
             <Image
-              src={'https://i.pinimg.com/736x/39/a4/ff/39a4ffed32f1cba66851cbbc399ae343.jpg'}
+              src={'/solutions.png'}
               width={100}
               height={100}
               unoptimized
               alt="Illustration of a person looking at a screen with webhook data"
-              className="w-full h-full aspect-square object-cover rounded-lg shadow-lg"
+              className="w-full h-full aspect-square object-contain"
             />
           </div>
           <div className="w-full">
@@ -193,14 +192,14 @@ export default function Home() {
 
             <hr className="h-1 rounded-full bg-primary/70 w-3/4 mt-5" />
             <ul className="w-full mt-10 space-y-5 py-10">
-              <li className="text-sm md:text-lg font-semibold flex items-center gap-3">
-                <ArrowBigRight className="text-primary" size={20} /> Generate a webhook URL
+              <li className="text-sm md:text-lg font-semibold grid items-center gap-3 grid-cols-7">
+                <ArrowBigRight className="text-primary grid-cols-1" size={20} /> <span className='col-span-6'>Generate a webhook URL</span>
               </li>
-              <li className="text-sm md:text-lg font-semibold flex items-center gap-3">
-                <ArrowBigRight className="text-primary" size={20} /> Plug it into Stripe / Dodo Payments or any provider
+              <li className="text-sm md:text-lg font-semibold grid items-center gap-3 grid-cols-7">
+                <ArrowBigRight className="text-primary grid-cols-1" size={20} /> <span className='col-span-6'>Plug it into Stripe / Dodo Payments or any provider</span>
               </li>
-              <li className="text-sm md:text-lg font-semibold flex items-center gap-3">
-                <ArrowBigRight className="text-primary" size={20} /> See every request headers, body, retries
+              <li className="text-sm md:text-lg font-semibold grid items-center gap-3 grid-cols-7">
+                <ArrowBigRight className="text-primary grid-cols-1" size={20} /> <span className='col-span-6'>See every request headers, body, retries</span>
               </li>
             </ul>
 
@@ -234,7 +233,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className='w-full px-5 md:px-10 py-10 max-w-7xl mx-auto  mt-10 md:mt-20'>
+        {/* <section className='w-full px-5 md:px-10 py-10 max-w-7xl mx-auto  mt-10 md:mt-20'>
           <h2 className="text-xl md:text-4xl text-primary font-bold">
             This is what Stripe actually sends.
           </h2>
@@ -249,7 +248,7 @@ export default function Home() {
               code={webhookCode}
             />
           </div>
-        </section>
+        </section> */}
 
         <section className='w-full px-5 md:px-10 py-10 max-w-7xl mx-auto  mt-10 md:mt-20'>
           <h2 className="text-xl md:text-4xl text-primary font-bold">
@@ -269,10 +268,8 @@ export default function Home() {
           <p className='max-w-3xl mx-auto text-sm md:text-lg text-gray-700'>
             Create a temporary webhook endpoint and start capturing requests from Stripe, DodoPayments, or any service that sends webhooks.
           </p>
-          <Link href={'/generate-hook'}>
-            <Button>
-              Generate Webhook URL
-            </Button>
+          <Link href={'/generate-endpoint'} className='w-fit mx-auto'>
+            <Button className='flex items-center gap-2 w-fit mx-auto'>Generate a webhook URL <Link2 size={20} /></Button>
           </Link>
           <p className='text-black mt-5'>No signup required • Works instantly</p>
         </section>

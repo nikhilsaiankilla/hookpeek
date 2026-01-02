@@ -5,7 +5,7 @@ import Link from 'next/link'
 const Footer = () => {
     const navlinks = [
         { name: 'Home', path: '/' },
-        { name: 'Generate Webhook', path: '/generate' },
+        { name: 'Generate Webhook', path: '/generate-endpoint' },
         { name: 'Requests', path: '/debug' },
         { name: 'Github', path: 'https://github.com/nikhilsaiankilla/hookpeek', target: true },
         // { name: 'Founder', path: 'https:nikhilsai.in', target: true },
@@ -59,7 +59,7 @@ const Footer = () => {
 
                 <hr className='w-full h-px mt-5 bg-white'/>
 
-                <p className='text-center text-white font-semibold mt-10'>Made by ❤ <Link href={'http://nikhilsai.in'}>Nikhil Sai</Link></p>
+                <p className='text-center text-white font-semibold mt-10'>Made by ❤ <Link href={'http://nikhilsai.in'} className='underline'>Nikhil Sai</Link></p>
             </div>
         </footer>
     )
