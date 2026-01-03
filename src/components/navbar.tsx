@@ -49,7 +49,7 @@ const Navbar = () => {
                 }
             </div>
 
-            <nav className={`w-full h-fit backdrop-blur-3xl bg-white rounded-sm shadow-lg flex flex-col items-start absolute top-16 p-5 space-y-5 md:hidden ${isOpen ? "left-1/2 -translate-x-1/2" : "-left-[300%]"} transition-all duration-300 ease-in`}>
+            <nav className={`w-full h-fit backdrop-blur-3xl bg-gray-300/90 rounded-sm shadow-lg flex flex-col items-start absolute top-20 p-5 space-y-5 md:hidden ${isOpen ? "left-1/2 -translate-x-1/2" : "-left-[300%]"} transition-all duration-300 ease-in`}>
                 {
                     navlinks.map(
                         (link, idx) => <Link

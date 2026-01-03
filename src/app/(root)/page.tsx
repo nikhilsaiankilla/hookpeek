@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     siteName: "HookPeek",
     images: [
       {
-        url: "/og-image.png", 
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "HookPeek — Webhook Inspection Tool",
@@ -168,7 +168,9 @@ export default function Home() {
                 <Link href={'/generate-endpoint'}>
                   <Button className='flex items-center gap-2'>Generate a webhook URL <Link2 size={20} /></Button>
                 </Link>
-                <Button variant="outline" className='flex items-center gap-2'>Monitor Requests <Logs /></Button>
+                <Link href={'/debug'}>
+                  <Button variant="outline" className='flex items-center gap-2'>Monitor Requests <Logs /></Button>
+                </Link>
               </div>
             </div>
           </div>
@@ -290,7 +292,7 @@ export default function Home() {
           </div>
         </section> */}
 
-        <section className='w-full px-5 md:px-10 py-10 max-w-7xl mx-auto  mt-10 md:mt-20'>
+        {/* <section className='w-full px-5 md:px-10 py-10 max-w-7xl mx-auto  mt-10 md:mt-20'>
           <h2 className="text-xl md:text-4xl text-primary font-bold">
             Built for backend developers.
           </h2>
@@ -299,7 +301,7 @@ export default function Home() {
               builtForPoints.map((point, idx) => <li className='flex text-lg font-semibold items-center gap-4' key={idx}><ArrowBigRight size={20} className='text-primary' />{point}</li>)
             }
           </ul>
-        </section>
+        </section> */}
 
         <section className='w-full px-5 md:px-10 py-10 max-w-7xl mx-auto text-center space-y-5 mt-10 md:mt-20'>
           <h2 className="text-xl md:text-4xl text-primary font-bold text-center">
